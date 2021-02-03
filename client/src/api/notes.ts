@@ -28,17 +28,14 @@ export const addNote = async (): Promise<INote> => {
 };
 
 export const updateNote = async (input: INote): Promise<INote> => {
-    const response = await fetch(
-        `/api/notes/${input.id}`,
-        {
-            method: 'put',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ text: input.text }),
-        }
-    );
+    const response = await fetch(`/api/notes/${input.id}`, {
+        method: 'put',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...input }),
+    });
 
     const data = await response.json();
 
