@@ -7,13 +7,15 @@ import { RegisterPage } from './components/RegisterPage';
 import { EditorPage } from './components/EditorPage';
 import { checkLoginAsync } from './features/users/usersSlice';
 import { RootState } from './app/store';
+import { AppPreloader } from './components/AppPreloader';
 
 function App() {
     const dispatch = useDispatch();
-    const { isAuthenticated } = useSelector((state: RootState) => state.users);
+    const { isAuthenticated, checkRequest } = useSelector(
+        (state: RootState) => state.users
+    );
 
     useEffect(() => {
-        
         dispatch(checkLoginAsync());
     }, [dispatch]);
 
@@ -21,9 +23,12 @@ function App() {
         if (isAuthenticated) {
             dispatch(fetchNotesAsync());
         }
-    }, [dispatch, isAuthenticated])
+    }, [dispatch, isAuthenticated]);
 
-    return (
+    return !isAuthenticated &&
+        checkRequest !== 'fulfilled' ? (
+        <AppPreloader />
+    ) : (
         <BrowserRouter>
             <div className="app">
                 <Switch>
