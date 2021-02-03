@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { LoginPage } from './components/LoginPage';
 import { fetchNotesAsync } from './features/notes/noteSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,7 +25,8 @@ function App() {
         }
     }, [dispatch, isAuthenticated]);
 
-    return !isAuthenticated && checkRequest === 'pending' ? (
+    return !isAuthenticated &&
+        checkRequest !== 'fulfilled' ? (
         <AppPreloader />
     ) : (
         <BrowserRouter>
