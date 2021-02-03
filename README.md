@@ -35,7 +35,6 @@
 ### Front-end
 - React
 - Redux Toolkit
-- React Quill (визуальный редактор текста)
 - SCSS
 - TypeScript
 
