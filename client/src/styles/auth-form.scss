@@ -1,0 +1,84 @@
+@import 'colors';
+
+.auth-container {
+    background-color: #fff;
+    border: 1px solid #f1f1f1;
+    box-shadow: 0 2px 3px 0 rgba(#000, 0.1);
+    text-align: center;
+    min-width: 532px;
+    padding: 30px 50px;
+
+    &__outer {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $page-bg-color;
+    }
+
+    &__title {
+        font-size: 2.25rem;
+        color: $gray-medium;
+        margin-bottom: 20px;
+    }
+
+    &__subtitle {
+        font-size: 1rem;
+        font-weight: bold;;
+        color: $gray-light;
+        margin-bottom: 2.25rem;
+    }
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &__input {
+        border-radius: 100px;
+        border: 1px solid $gray-lightest;
+        outline: none;
+        font-size: 1rem;
+        color: $gray-light;
+        padding: 10px 20px;
+        transition: .2s all ease-out;
+
+        &:focus {
+            color: $gray-medium;
+            border-color: $gray-medium;
+        }
+
+        &::placeholder {
+            color: $gray-lightest;
+        }
+
+        &--error {
+            color: $accent;
+            border-color: $accent;
+        }
+    }
+
+    &__action {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        span {
+            color: $gray-light;
+            display: inline-block;
+            margin: 0 20px;
+        }
+    }
+
+    &__error {
+        color: $accent;
+        font-size: .8rem;
+        text-align: initial;
+    }
+}
+
+.form-error {
+    color: $accent;
+    font-weight: bold;
+}

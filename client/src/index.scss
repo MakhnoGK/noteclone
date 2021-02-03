@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import 'styles/elements';
+@import 'styles/editor';
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.app {
+    width: 100vw;
+    height: 100vh;
+}
+
+.note {
+    &__title {
+        
+    }
+
+    &__content {
+        margin-top: 10px;
+    }
+}
+
+.note__content {
+    ul {
+        margin-left: 1.1rem;
+    }
+}
+
+.note-list__message {
+    display: block;
+    text-align: center;
+    padding: 20px;
+}

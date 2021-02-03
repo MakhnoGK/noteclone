@@ -1,0 +1,88 @@
+@import 'colors';
+
+.button, .link {
+    transition: .2s all ease-out;
+}
+
+.button {
+    font: inherit;
+    cursor: pointer;
+    font-weight: bold;
+    appearance: none;
+    border: none;
+    outline: none;
+    min-height: 2.5rem;
+    min-width: 10rem;
+    padding: 10px 50px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__spinner {
+        animation: spinnerAnimation 0.8s infinite linear;
+    }
+
+    &--busy {
+        cursor: initial;
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    &--primary {
+        background-color: $primary;
+        color: #eeeeee;
+
+        &:hover {
+            background-color: $accent;
+            color: #ffffff;
+        }
+    }
+
+    &--danger {
+        background-color: $accent;
+        color: #fff;
+
+        &:hover {
+            background-color: $gray-lightest;
+            color: $gray-medium;
+        }
+    }
+
+    &--round {
+        width: auto;
+        height: auto;
+        border-radius: 50%;
+        padding: 0.8rem;
+        min-width: auto;
+    }
+}
+
+.link {
+    text-decoration: none;
+
+    &--primary {
+        color: $primary;
+
+        &:hover {
+            color: $accent;
+        }
+    }
+}
+
+@keyframes spinnerAnimation {
+    from {
+        transform: rotateZ(0deg);
+    }
+
+    to {
+        transform: rotateZ(360deg);
+    }
+}
+
+.message {
+    &--info {
+        color: $gray-medium;
+        background-color: #f5f5f5;
+    }
+}
