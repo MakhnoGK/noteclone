@@ -5,6 +5,7 @@ import { checkLogin, login, logout, register } from '../../api/users';
 interface IAuthState {
     user: IUser | null;
     isAuthenticated: boolean;
+    checkRequest: RequestState;
     loginRequest: RequestState;
     registerRequest: RequestState;
     logoutRequest: RequestState;
@@ -20,6 +21,7 @@ interface IUser {
 const initialState: IAuthState = {
     user: null,
     isAuthenticated: false,
+    checkRequest: 'idle',
     loginRequest: 'idle',
     registerRequest: 'idle',
     logoutRequest: 'idle',
@@ -63,11 +65,17 @@ export const usersSlice = createSlice({
             }
         });
 
+        builder.addCase(checkLoginAsync.pending, (state, _) => {
+            state.checkRequest = 'pending';
+        })
+
         builder.addCase(checkLoginAsync.fulfilled, (state, action: any) => {
             if (action.payload) {
                 state.user = action.payload.user;
                 state.isAuthenticated = true;
             }
+
+            state.checkRequest = 'fulfilled';
         });
 
         builder.addCase(loginAsync.pending, (state, _) => {
