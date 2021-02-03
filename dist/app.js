@@ -19,12 +19,12 @@ app.use(cors_1.default());
 app.use(cookie_parser_1.default());
 app.use('/api', routes_1.default);
 console.log(process.env.NODE_ENV);
-if (process.env.NODE_ENV !== 'development') {
-    app.use(express_1.default.static(path_1.default.join(__dirname, 'public')));
-    app.get('*', (_, res) => {
-        res.sendFile(path_1.default.join(__dirname, 'public', 'index.html'));
-    });
-}
+// if (process.env.NODE_ENV !== 'development') {
+app.use(express_1.default.static(path_1.default.join(__dirname, 'public')));
+app.get('*', (_, res) => {
+    res.sendFile(path_1.default.join(__dirname, 'public', 'index.html'));
+});
+// }
 const server = app.listen(process.env.PORT, async () => {
     try {
         await db_1.default.authenticate();

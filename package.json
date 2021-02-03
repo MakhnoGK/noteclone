@@ -11,7 +11,7 @@
         "build": "npm run build:server && npm run build:client",
         "build:client": "cd client && npm install && npm run build",
         "build:server": "tsc -p .",
-        "postbuild": "cp -r client/build dist/public --remove-destination"
+        "postbuild": "rm -rf dist/public && cp -r client/build dist/public"
     },
     "keywords": [],
     "author": "",
