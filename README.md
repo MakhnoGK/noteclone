@@ -14,7 +14,7 @@
 - Валидация на стороне сервера: вывод сообщения об ошибке: если имя пользователя существует; если введенный пароль неверный.
 
 <figure align="center">
-    <img src="https://images2.imagebam.com/ab/24/d9/9cda601368917124.png" alt="Страница входа">
+    <img src="https://images2.imagebam.com/2d/08/a0/9cda601368951820.png" alt="Страница входа">
     <figcaption>Страница авторизации</figcaption>
 </figure>
 
