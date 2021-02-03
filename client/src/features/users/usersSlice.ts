@@ -70,6 +70,10 @@ export const usersSlice = createSlice({
             }
         });
 
+        builder.addCase(loginAsync.pending, (state, _) => {
+            state.loginRequest = 'pending';
+        })
+
         builder.addCase(loginAsync.fulfilled, (state, action) => {
             if (!action.payload.error) {
                 state.user = action.payload.user;
@@ -77,6 +81,8 @@ export const usersSlice = createSlice({
             } else {
                 state.requestError = action.payload.error;
             }
+
+            state.loginRequest = 'fulfilled';
         });
 
         builder.addCase(logoutAsync.fulfilled, (state, action) => {

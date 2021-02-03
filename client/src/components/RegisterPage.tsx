@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { RootState } from '../app/store';
-import { registerAsync } from '../features/users/usersSlice';
+import { clearError, registerAsync } from '../features/users/usersSlice';
 import ActiveButton from './ActiveButton';
 import { ErrorMessage } from './ErrorMessage';
 
@@ -90,9 +90,13 @@ export const RegisterPage = () => {
 
     useEffect(() => {
         if (registerRequest === 'fulfilled') {
-            // history.push('/login');
+            history.push('/login');
         }
     }, [registerRequest, history]);
+
+    useEffect(() => {
+        dispatch(clearError);
+    }, [dispatch]);
 
     return (
         <div className="auth-container__outer">
