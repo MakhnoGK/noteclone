@@ -51,6 +51,9 @@ export const usersSlice = createSlice({
         clearError(state, _) {
             state.requestError = null;
         },
+        resetRegisterRequest(state, _) {
+            state.registerRequest = 'idle';
+        }
     },
     extraReducers(builder) {
         builder.addCase(registerAsync.pending, (state, _) => {
@@ -58,11 +61,13 @@ export const usersSlice = createSlice({
         });
 
         builder.addCase(registerAsync.fulfilled, (state, action: any) => {
-            state.registerRequest = 'fulfilled';
-
             if (action.payload.error) {
                 state.requestError = action.payload.error;
+                state.registerRequest = 'idle';
+                return;
             }
+
+            state.registerRequest = 'fulfilled';
         });
 
         builder.addCase(checkLoginAsync.pending, (state, _) => {
@@ -80,7 +85,7 @@ export const usersSlice = createSlice({
 
         builder.addCase(loginAsync.pending, (state, _) => {
             state.loginRequest = 'pending';
-        })
+        });
 
         builder.addCase(loginAsync.fulfilled, (state, action) => {
             if (!action.payload.error) {
@@ -100,6 +105,6 @@ export const usersSlice = createSlice({
     },
 });
 
-export const { clearError } = usersSlice.actions;
+export const { clearError, resetRegisterRequest } = usersSlice.actions;
 
 export default usersSlice.reducer;

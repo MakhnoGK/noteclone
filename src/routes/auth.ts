@@ -19,12 +19,9 @@ routes.get('/', async (_req, res) => {
 
 routes.post('/signup', async (req, res) => {
     try {
-        // Check if user with that username exists
-        const userExists =
-            (await User.findAll({ where: { username: req.body.username } }))
-                .length > 0;
-
-        if (userExists) {
+        if (
+            (await User.count({ where: { username: req.body.username } })) > 0
+        ) {
             return res.status(200).json({ error: 'Username already taken' });
         }
 
