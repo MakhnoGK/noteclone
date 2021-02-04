@@ -6,6 +6,16 @@
     display: grid;
     grid-template-columns: 70px 300px 1fr;
     grid-template-rows: 70px 1fr;
+
+    .note-actions {
+        display: flex;
+        align-items: center;
+
+        &__item {
+            margin-left: 20px;
+            color: $gray-medium;
+        }
+    }
 }
 
 .editor-nav {

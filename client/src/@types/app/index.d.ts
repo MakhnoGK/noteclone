@@ -12,5 +12,6 @@ export interface INoteState {
     loadState: RequestState;
     saveState: RequestState;
     updateState: RequestState;
-    deleteState: RequestState; 
+    deleteState: RequestState;
+    createState: RequestState;
 }

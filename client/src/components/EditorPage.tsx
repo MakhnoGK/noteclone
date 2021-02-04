@@ -18,7 +18,7 @@ export const EditorPage = () => {
     const { isAuthenticated, user } = useSelector(
         (state: RootState) => state.users
     );
-    const { selected, saveState, deleteState } = useSelector(
+    const { selected, saveState, deleteState, createState } = useSelector(
         (state: RootState) => state.notes
     );
     const currentNote = useSelector(selectCurrentNote);
@@ -35,16 +35,24 @@ export const EditorPage = () => {
                 <header className="editor-header">
                     <div className="note-actions">
                         {currentNote && (
-                            <ActiveButton
-                                active={deleteState === 'pending'}
-                                rounded={true}
-                                variant="danger"
-                                onClick={() =>
-                                    dispatch(deleteNoteAsync(selected))
-                                }
-                            >
-                                <BsTrashFill size={20} />
-                            </ActiveButton>
+                            <>
+                                <ActiveButton
+                                    active={deleteState === 'pending'}
+                                    rounded={true}
+                                    variant="danger"
+                                    onClick={() =>
+                                        dispatch(deleteNoteAsync(selected))
+                                    }
+                                >
+                                    <BsTrashFill size={20} />
+                                </ActiveButton>
+
+                                {saveState === 'pending' && (
+                                    <div className="note-actions__item">
+                                        Saving...
+                                    </div>
+                                )}
+                            </>
                         )}
                     </div>
                     <div className="user">
@@ -66,7 +74,7 @@ export const EditorPage = () => {
                 </header>
                 <nav className="editor-nav">
                     <ActiveButton
-                        active={saveState === 'pending'}
+                        active={createState === 'pending'}
                         rounded={true}
                         variant="primary"
                         onClick={() => dispatch(addNoteAsync())}
