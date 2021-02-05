@@ -1,12 +1,21 @@
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { CgSpinner } from 'react-icons/cg';
+import { useSelector } from 'react-redux';
 import sanitize from 'sanitize-html';
+import { RootState } from '../../app/store';
+import { Spinner } from '../../components/Spinner';
 import { useNoteList } from '../../hooks/useNoteList';
 
 const NoteList = () => {
     const [notes, selected, setActive] = useNoteList();
+    const { loadState } = useSelector((state: RootState) => state.notes);
 
-    return notes.length > 0 ? (
+    return loadState === 'pending' ? (
+        <div style={{textAlign:'center', marginTop: 24}}>
+            <CgSpinner size={48} className="note-loader-icon" />
+        </div>
+    ) : notes.length > 0 ? (
         <Scrollbars
             className="note-list"
             renderThumbVertical={(props) => (

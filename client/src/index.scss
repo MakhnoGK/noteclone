@@ -22,7 +22,6 @@ body {
 
 .note {
     &__title {
-        
     }
 
     &__content {
@@ -40,4 +39,17 @@ body {
     display: block;
     text-align: center;
     padding: 20px;
+}
+
+.note-loader-icon {
+    animation: 1s infinite linear rotate;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotateZ(0deg);
+    }
+    to {
+        transform: rotateZ(360deg);
+    }
 }

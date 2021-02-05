@@ -11,6 +11,7 @@ import { RootState } from '../../app/store';
 const initialState: INoteState = {
     notes: [],
     selected: 0,
+    createState: 'idle',
     loadState: 'idle',
     deleteState: 'idle',
     updateState: 'idle',
@@ -63,6 +64,13 @@ const noteSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
+        builder.addCase(saveNoteAsync.pending, (state, _) => {
+            state.saveState = 'pending';
+        });
+        builder.addCase(saveNoteAsync.fulfilled, (state, _) => {
+            state.saveState = 'fulfilled';
+        })
+
         builder.addCase(fetchNotesAsync.pending, (state) => {
             state.loadState = 'pending';
         });
@@ -76,10 +84,10 @@ const noteSlice = createSlice({
         });
 
         builder.addCase(addNoteAsync.pending, (state) => {
-            state.saveState = 'pending';
+            state.createState = 'pending';
         });
         builder.addCase(addNoteAsync.fulfilled, (state, { payload }) => {
-            state.saveState = 'fulfilled';
+            state.createState = 'fulfilled';
             state.notes.unshift(payload);
             state.selected = payload.id;
         });
