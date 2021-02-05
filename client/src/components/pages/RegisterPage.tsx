@@ -1,47 +1,54 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { clearError, loginAsync } from '../features/users/usersSlice';
-import { Link, useHistory } from 'react-router-dom';
-import { RootState } from '../app/store';
-import ActiveButton from './ActiveButton';
-import { ErrorMessage } from './ErrorMessage';
-import '../styles/auth-form.scss';
-import { useForm } from 'react-hook-form/dist';
 import { yupResolver } from '@hookform/resolvers/dist/yup';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form/dist';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import { RootState } from '../../app/store';
+import {
+    clearError,
+    resetRegisterRequest,
+} from '../../features/users/usersSlice';
+import ActiveButton from '../elements/ActiveButton';
+import { ErrorMessage } from '../elements/ErrorMessage';
 import * as yup from 'yup';
+import { registerAsync } from '../../features/users/asyncFunctions';
 
-type Inputs = {
+interface Inputs {
     username: string;
     password: string;
-};
+    fullname: string;
+}
 
-const loginSchema = yup.object().shape({
+const registerSchema = yup.object().shape({
     username: yup.string().required().min(3),
     password: yup.string().required().min(3),
 });
 
-export const LoginPage = () => {
-    const history = useHistory();
-    const dispatch = useDispatch();
-    const { isAuthenticated, loginRequest } = useSelector(
+export const RegisterPage = () => {
+    const { registerRequest, requestError } = useSelector(
         (state: RootState) => state.users
     );
+    const history = useHistory();
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(clearError(null));
+        dispatch(clearError);
     }, [dispatch]);
 
     useEffect(() => {
-        if (isAuthenticated) history.push('/');
-    }, [isAuthenticated, history]);
+        if (registerRequest === 'fulfilled') {
+            dispatch(resetRegisterRequest(null));
+            history.push('/login');
+        }
+    }, [registerRequest, history, dispatch]);
+
+    const onRegister = async (data: Inputs) => {
+        dispatch(registerAsync(data));
+    };
 
     const { register, handleSubmit, errors } = useForm<Inputs>({
-        resolver: yupResolver(loginSchema),
+        resolver: yupResolver(registerSchema),
     });
-
-    const onLogin = (data: Inputs) => {
-        dispatch(loginAsync(data));
-    };
 
     return (
         <div className="auth-container__outer">
@@ -51,7 +58,7 @@ export const LoginPage = () => {
                     Please login or register to open editor
                 </p>
 
-                <form className="auth-form" onSubmit={handleSubmit(onLogin)}>
+                <form className="auth-form" onSubmit={handleSubmit(onRegister)}>
                     <input
                         className={`auth-form__input ${
                             errors.username ? 'auth-form__input--error' : null
@@ -64,7 +71,7 @@ export const LoginPage = () => {
 
                     {errors.username && (
                         <div className="auth-form__error">
-                            {errors?.username?.message}
+                            {errors.username.message}
                         </div>
                     )}
 
@@ -80,23 +87,30 @@ export const LoginPage = () => {
 
                     {errors.password && (
                         <div className="auth-form__error">
-                            {errors?.password?.message}
+                            {errors.password.message}
                         </div>
                     )}
 
-                    <ErrorMessage />
+                    <input
+                        className="auth-form__input"
+                        type="text"
+                        placeholder="Display name"
+                        name="fullname"
+                        ref={register}
+                    />
+
+                    <ErrorMessage message={requestError} variant="danger" />
 
                     <div className="auth-form__action">
                         <ActiveButton
-                            active={loginRequest === 'pending'}
+                            active={registerRequest === 'pending'}
                             variant="primary"
-                            type="submit"
                         >
-                            Login
+                            Register
                         </ActiveButton>
                         <span>or</span>
-                        <Link to="/register" className="link link--primary">
-                            Create new account
+                        <Link to="/login" className="link link--primary">
+                            Login
                         </Link>
                     </div>
                 </form>

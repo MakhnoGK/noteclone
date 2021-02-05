@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { LoginPage } from './components/LoginPage';
-import { fetchNotesAsync } from './features/notes/noteSlice';
+import { LoginPage } from './components/pages/LoginPage';
 import { useDispatch, useSelector } from 'react-redux';
-import { RegisterPage } from './components/RegisterPage';
-import { EditorPage } from './components/EditorPage';
-import { checkLoginAsync } from './features/users/usersSlice';
+import { RegisterPage } from './components/pages/RegisterPage';
+import { EditorPage } from './components/pages/EditorPage';
 import { RootState } from './app/store';
-import { AppPreloader } from './components/AppPreloader';
+import { AppPreloader } from './components/layout/AppPreloader';
+import { checkLoginAsync } from './features/users/asyncFunctions';
+import { fetchNotesAsync } from './features/notes/asyncFunctions';
 
 function App() {
     const dispatch = useDispatch();

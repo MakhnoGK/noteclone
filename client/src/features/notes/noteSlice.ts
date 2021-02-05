@@ -1,12 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { INote, INoteState } from '../../@types/app';
-import {
-    fetchAllNotes,
-    updateNote,
-    addNote,
-    deleteNote,
-} from '../../api/notes';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { INoteState } from '../../@types/app';
 import { RootState } from '../../app/store';
+import { saveNoteAsync, fetchNotesAsync, addNoteAsync, deleteNoteAsync } from './asyncFunctions';
 
 const initialState: INoteState = {
     notes: [],
@@ -17,32 +12,6 @@ const initialState: INoteState = {
     updateState: 'idle',
     saveState: 'idle',
 };
-
-export const fetchNotesAsync = createAsyncThunk<INote[]>(
-    'notes/fetch',
-    async () => await fetchAllNotes()
-);
-
-export const addNoteAsync = createAsyncThunk<INote>(
-    'notes/add',
-    async () => await addNote()
-);
-
-export const deleteNoteAsync = createAsyncThunk<INote, number>(
-    'notes/delete',
-    async (noteId) => await deleteNote(noteId)
-);
-
-export const saveNoteAsync = createAsyncThunk<INote, {title: string, text: string}>(
-    'notes/save',
-    async (note, { getState }) => {
-        const {
-            notes: { selected },
-        } = getState() as RootState;
-
-        return await updateNote({ id: selected, ...note });
-    }
-);
 
 const noteSlice = createSlice({
     name: 'notes',

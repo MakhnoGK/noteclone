@@ -1,9 +1,9 @@
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { CgSpinner } from 'react-icons/cg';
 import { useSelector } from 'react-redux';
 import sanitize from 'sanitize-html';
 import { RootState } from '../../app/store';
+import { Spinner } from '../../components/elements/Spinner';
 import { useNoteList } from '../../hooks/useNoteList';
 
 const NoteList = () => {
@@ -11,8 +11,8 @@ const NoteList = () => {
     const { loadState } = useSelector((state: RootState) => state.notes);
 
     return loadState === 'pending' ? (
-        <div style={{textAlign:'center', marginTop: 24}}>
-            <CgSpinner size={48} className="note-loader-icon" />
+        <div style={{ textAlign: 'center', marginTop: 24 }}>
+            <Spinner className="note-list__loader-icon" size={32} />
         </div>
     ) : notes.length > 0 ? (
         <Scrollbars

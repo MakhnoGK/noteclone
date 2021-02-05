@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
 import { useDispatch, useSelector } from 'react-redux';
-import { saveNoteAsync, selectCurrentNote } from './noteSlice';
+import { selectCurrentNote } from './noteSlice';
 import { useNoteEditor } from '../../hooks/useNoteEditor';
 import placeholderIcon from '../../assets/images/blank-document.svg';
 import 'react-quill/dist/quill.snow.css';
+import { saveNoteAsync } from './asyncFunctions';
 
 const NoteEditor = () => {
     const currentNote = useSelector(selectCurrentNote);
