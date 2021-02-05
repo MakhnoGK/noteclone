@@ -1,22 +1,11 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RequestState } from '../../@types/app';
-import { checkLogin, login, logout, register } from '../../api/users';
-
-interface IAuthState {
-    user: IUser | null;
-    isAuthenticated: boolean;
-    checkRequest: RequestState;
-    loginRequest: RequestState;
-    registerRequest: RequestState;
-    logoutRequest: RequestState;
-    requestError: string | null;
-}
-
-interface IUser {
-    id: number;
-    username: string;
-    fullname: string;
-}
+import { createSlice } from '@reduxjs/toolkit';
+import { IAuthState } from '../../@types/app';
+import {
+    registerAsync,
+    checkLoginAsync,
+    loginAsync,
+    logoutAsync,
+} from './asyncFunctions';
 
 const initialState: IAuthState = {
     user: null,
@@ -28,22 +17,6 @@ const initialState: IAuthState = {
     requestError: null,
 };
 
-export const registerAsync = createAsyncThunk<IUser, any>(
-    'register',
-    async (user: any) => register(user)
-);
-
-export const loginAsync = createAsyncThunk<any, any>('login', async (user) =>
-    login(user)
-);
-
-export const checkLoginAsync = createAsyncThunk<IUser | null>(
-    'checkAuth',
-    async () => checkLogin()
-);
-
-export const logoutAsync = createAsyncThunk('logout', async () => logout());
-
 export const usersSlice = createSlice({
     name: 'users',
     initialState,
@@ -53,7 +26,7 @@ export const usersSlice = createSlice({
         },
         resetRegisterRequest(state, _) {
             state.registerRequest = 'idle';
-        }
+        },
     },
     extraReducers(builder) {
         builder.addCase(registerAsync.pending, (state, _) => {
@@ -72,7 +45,7 @@ export const usersSlice = createSlice({
 
         builder.addCase(checkLoginAsync.pending, (state, _) => {
             state.checkRequest = 'pending';
-        })
+        });
 
         builder.addCase(checkLoginAsync.fulfilled, (state, action: any) => {
             if (action.payload) {

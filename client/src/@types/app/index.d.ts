@@ -15,3 +15,19 @@ export interface INoteState {
     deleteState: RequestState;
     createState: RequestState;
 }
+
+interface IAuthState {
+    user: IUser | null;
+    isAuthenticated: boolean;
+    checkRequest: RequestState;
+    loginRequest: RequestState;
+    registerRequest: RequestState;
+    logoutRequest: RequestState;
+    requestError: string | null;
+}
+
+interface IUser {
+    id: number;
+    username: string;
+    fullname: string;
+}

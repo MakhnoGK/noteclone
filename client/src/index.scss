@@ -1,55 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import 'styles/colors';
+@import 'styles/layout';
+@import 'styles/auth-form';
+@import 'styles/note-list';
 @import 'styles/elements';
 @import 'styles/editor';
 @import 'styles/preloader';
-
-*,
-*::before,
-*::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+@import 'styles/animations';
 
 body {
     font-family: 'Roboto', sans-serif;
-}
-
-.app {
-    width: 100vw;
-    height: 100vh;
-}
-
-.note {
-    &__title {
-    }
-
-    &__content {
-        margin-top: 10px;
-    }
-}
-
-.note__content {
-    ul {
-        margin-left: 1.1rem;
-    }
-}
-
-.note-list__message {
-    display: block;
-    text-align: center;
-    padding: 20px;
-}
-
-.note-loader-icon {
-    animation: 1s infinite linear rotate;
-}
-
-@keyframes rotate {
-    from {
-        transform: rotateZ(0deg);
-    }
-    to {
-        transform: rotateZ(360deg);
-    }
 }

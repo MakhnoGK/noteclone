@@ -1,0 +1,29 @@
+.editor-list {
+    grid-row: 1/ 3;
+    color: $gray-medium;
+    border-right: 1px solid $gray-lightest;
+}
+
+.note-list {
+    &__message {
+        display: block;
+        text-align: center;
+        padding: 20px;
+    }
+
+    &__loader-icon {
+        animation: 1s infinite linear rotate;
+    }
+}
+
+.note {
+    &__content {
+        margin-top: 10px;
+    }
+}
+
+.note__content {
+    ul {
+        margin-left: 1.1rem;
+    }
+}

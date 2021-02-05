@@ -8,19 +8,10 @@
     color: $primary;
 
     &__icon {
-        animation: spin 1s infinite linear;
+        animation: rotate 1s infinite linear;
     }
 
     p {
         margin-top: 2rem;
-    }
-}
-
-@keyframes spin {
-    from {
-        transform: rotateZ(0deg);
-    }
-    to {
-        transform: rotateZ(360deg);
     }
 }

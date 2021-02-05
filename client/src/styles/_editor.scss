@@ -1,5 +1,3 @@
-@import 'colors';
-
 .editor-container {
     width: 100%;
     height: 100%;
@@ -52,19 +50,15 @@
     }
 }
 
-.editor-list {
-    grid-row: 1/ 3;
-    color: $gray-medium;
-    border-right: 1px solid $gray-lightest;
-}
-
 .editor-content {
     .ql-toolbar.ql-snow {
         border: none;
     }
+
     .ql-container.ql-snow {
         border: none;
     }
+    
     .ql-editor {
         color: darken($gray-medium, 10);
     }

@@ -10,14 +10,16 @@ interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 const ActiveButton: FC<PropsWithChildren<IProps>> = (props) => {
     const classes = ['button'];
 
-    props.active && classes.push('button--busy');
-    props.rounded && classes.push('button--round');
-    props.variant && classes.push(`button--${props.variant}`);
-    props.className && classes.push(...props.className.split(' '));
+    const { active, rounded, variant, className, ...rest } = props;
+
+    active && classes.push('button--busy');
+    rounded && classes.push('button--round');
+    variant && classes.push(`button--${props.variant}`);
+    className && classes.push(...className.split(' '));
 
     return (
-        <button {...props} className={classes.join(' ')}>
-            {props.active ? (
+        <button {...rest} className={classes.join(' ')}>
+            {active ? (
                 <Spinner className="button__spinner" />
             ) : (
                 props.children
