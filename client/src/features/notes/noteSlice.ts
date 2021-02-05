@@ -1,7 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { INoteState } from '../../@types/app';
 import { RootState } from '../../app/store';
-import { saveNoteAsync, fetchNotesAsync, addNoteAsync, deleteNoteAsync } from './asyncFunctions';
+import {
+    saveNoteAsync,
+    fetchNotesAsync,
+    addNoteAsync,
+    deleteNoteAsync,
+} from './asyncFunctions';
 
 const initialState: INoteState = {
     notes: [],
@@ -38,7 +43,7 @@ const noteSlice = createSlice({
         });
         builder.addCase(saveNoteAsync.fulfilled, (state, _) => {
             state.saveState = 'fulfilled';
-        })
+        });
 
         builder.addCase(fetchNotesAsync.pending, (state) => {
             state.loadState = 'pending';
@@ -95,4 +100,4 @@ export const { noteSelected, noteUpdated } = noteSlice.actions;
 
 export const selectNotes = (state: RootState) => state.notes.notes;
 export const selectCurrentNote = (state: RootState) =>
-    state.notes.notes.find((note) => note.id === state.notes.selected)
+    state.notes.notes.find((note) => note.id === state.notes.selected);
