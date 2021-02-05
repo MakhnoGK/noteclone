@@ -4,7 +4,6 @@ import { CgSpinner } from 'react-icons/cg';
 import { useSelector } from 'react-redux';
 import sanitize from 'sanitize-html';
 import { RootState } from '../../app/store';
-import { Spinner } from '../../components/Spinner';
 import { useNoteList } from '../../hooks/useNoteList';
 
 const NoteList = () => {

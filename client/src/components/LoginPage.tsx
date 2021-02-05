@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearError, loginAsync } from '../features/users/usersSlice';
 import { Link, useHistory } from 'react-router-dom';
@@ -6,17 +6,19 @@ import { RootState } from '../app/store';
 import ActiveButton from './ActiveButton';
 import { ErrorMessage } from './ErrorMessage';
 import '../styles/auth-form.scss';
+import { useForm } from 'react-hook-form/dist';
+import { yupResolver } from '@hookform/resolvers/dist/yup';
+import * as yup from 'yup';
 
-interface IFormState {
-    username: string | null;
-    password: string | null;
-    errors: IFormStateErrors;
-}
-
-interface IFormStateErrors {
+type Inputs = {
     username: string;
     password: string;
-}
+};
+
+const loginSchema = yup.object().shape({
+    username: yup.string().required().min(3),
+    password: yup.string().required().min(3),
+});
 
 export const LoginPage = () => {
     const history = useHistory();
@@ -24,71 +26,21 @@ export const LoginPage = () => {
     const { isAuthenticated, loginRequest } = useSelector(
         (state: RootState) => state.users
     );
-    const [form, setForm] = useState<IFormState>({
-        username: null,
-        password: null,
-        errors: {
-            username: '',
-            password: '',
-        },
-    });
 
     useEffect(() => {
-        dispatch(clearError(null))
-    }, [dispatch])
+        dispatch(clearError(null));
+    }, [dispatch]);
 
     useEffect(() => {
         if (isAuthenticated) history.push('/');
     }, [isAuthenticated, history]);
 
-    const formValid = () => {
-        let valid = true;
+    const { register, handleSubmit, errors } = useForm<Inputs>({
+        resolver: yupResolver(loginSchema),
+    });
 
-        Object.values(form.errors).forEach(
-            (field) => field.length > 0 && (valid = false)
-        );
-
-        // Check if form is filled
-        form.username === null && (valid = false);
-        form.password === null && (valid = false);
-
-        return valid;
-    };
-
-    const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (formValid()) {
-            dispatch(
-                loginAsync({ username: form.username, password: form.password })
-            );
-        }
-    };
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {
-            target: { value, name },
-        } = e;
-
-        let { errors } = form;
-
-        switch (name) {
-            case 'username':
-                errors.username =
-                    value.length < 3
-                        ? 'Username is required and must be at least 3 characters long.'
-                        : '';
-                break;
-            case 'password':
-                errors.password =
-                    value.length < 3
-                        ? 'Password is required and must be at least 3 characters long.'
-                        : '';
-                break;
-            default:
-                break;
-        }
-
-        setForm((state: any) => ({ ...state, [name]: value, errors }));
+    const onLogin = (data: Inputs) => {
+        dispatch(loginAsync(data));
     };
 
     return (
@@ -99,43 +51,41 @@ export const LoginPage = () => {
                     Please login or register to open editor
                 </p>
 
-                <form className="auth-form" onSubmit={handleLogin}>
+                <form className="auth-form" onSubmit={handleSubmit(onLogin)}>
                     <input
                         className={`auth-form__input ${
-                            form.errors.username.length > 0
-                                ? 'auth-form__input--error'
-                                : null
+                            errors.username ? 'auth-form__input--error' : null
                         }`}
                         type="text"
                         placeholder="Username"
                         name="username"
-                        onChange={handleChange}
+                        ref={register}
                     />
 
-                    {form.errors.username.length > 0 && (
+                    {errors.username && (
                         <div className="auth-form__error">
-                            {form.errors.username}
+                            {errors?.username?.message}
                         </div>
                     )}
 
                     <input
                         className={`auth-form__input ${
-                            form.errors.password.length > 0
-                                ? 'auth-form__input--error'
-                                : null
+                            errors.password ? 'auth-form__input--error' : null
                         }`}
                         type="password"
                         placeholder="Password"
                         name="password"
-                        onChange={handleChange}
+                        ref={register}
                     />
 
-                    {form.errors.password.length > 0 && (
+                    {errors.password && (
                         <div className="auth-form__error">
-                            {form.errors.password}
+                            {errors?.password?.message}
                         </div>
                     )}
+
                     <ErrorMessage />
+
                     <div className="auth-form__action">
                         <ActiveButton
                             active={loginRequest === 'pending'}
