@@ -27,6 +27,16 @@ export const usersSlice = createSlice({
         resetRegisterRequest(state, _) {
             state.registerRequest = 'idle';
         },
+        login(state, action) {
+            if (action.payload) {
+                state.user = action.payload;
+                state.isAuthenticated = true;
+            }
+        },
+        logout(state, _) {
+            state.user = null;
+            state.isAuthenticated = false;
+        },
     },
     extraReducers(builder) {
         builder.addCase(registerAsync.pending, (state, _) => {
@@ -43,34 +53,6 @@ export const usersSlice = createSlice({
             state.registerRequest = 'fulfilled';
         });
 
-        builder.addCase(checkLoginAsync.pending, (state, _) => {
-            state.checkRequest = 'pending';
-        });
-
-        builder.addCase(checkLoginAsync.fulfilled, (state, action: any) => {
-            if (action.payload) {
-                state.user = action.payload.user;
-                state.isAuthenticated = true;
-            }
-
-            state.checkRequest = 'fulfilled';
-        });
-
-        builder.addCase(loginAsync.pending, (state, _) => {
-            state.loginRequest = 'pending';
-        });
-
-        builder.addCase(loginAsync.fulfilled, (state, action) => {
-            if (!action.payload.error) {
-                state.user = action.payload.user;
-                state.isAuthenticated = true;
-            } else {
-                state.requestError = action.payload.error;
-            }
-
-            state.loginRequest = 'fulfilled';
-        });
-
         builder.addCase(logoutAsync.fulfilled, (state, action) => {
             state.user = null;
             state.isAuthenticated = false;
@@ -78,6 +60,6 @@ export const usersSlice = createSlice({
     },
 });
 
-export const { clearError, resetRegisterRequest } = usersSlice.actions;
+export const { login, logout, clearError, resetRegisterRequest } = usersSlice.actions;
 
 export default usersSlice.reducer;

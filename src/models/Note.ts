@@ -3,6 +3,7 @@ import db from '../db';
 import User from './User';
 
 class Note extends Model {
+    public id!: number;
     public userId!: number;
 }
 

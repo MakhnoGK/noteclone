@@ -1,59 +1,63 @@
-import React from 'react';
+import { gql, useQuery } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import sanitize from 'sanitize-html';
 import { RootState } from '../../app/store';
 import { Spinner } from '../../components/elements/Spinner';
-import { useNoteList } from '../../hooks/useNoteList';
+import NoteListItem from './NoteListItem';
+import { noteSelected, notesLoaded } from './noteSlice';
+
+const GET_NOTES = gql`
+  query getNotes {
+    notes {
+      id
+      title
+      text
+    }
+  }
+`;
 
 const NoteList = () => {
-    const [notes, selected, setActive] = useNoteList();
-    const { loadState } = useSelector((state: RootState) => state.notes);
+  const {
+    data: notesData,
+    loading: notesLoading,
+    error: notesError,
+  } = useQuery(GET_NOTES);
+  const { notes, selected } = useSelector((state: RootState) => state.notes);
+  const dispatch = useDispatch();
 
-    return loadState === 'pending' ? (
-        <div style={{ textAlign: 'center', marginTop: 24 }}>
-            <Spinner className="note-list__loader-icon" size={32} />
-        </div>
-    ) : notes.length > 0 ? (
-        <Scrollbars
-            className="note-list"
-            renderThumbVertical={(props) => (
-                <div {...props} className="note-list__thumb-vertical" />
-            )}
-        >
-            {notes.map((note) => {
-                const sanitizedHtml = sanitize(note.text, {
-                    allowedTags: ['p', 'ul', 'ol', 'li'],
-                });
+  useEffect(() => {
+    if (notesData && notesData.notes) {
+      dispatch(notesLoaded(notesData.notes));
+      dispatch(noteSelected(notesData.notes[0]?.id));
+    }
+  }, [notesData]);
 
-                return (
-                    <div
-                        className={`note ${
-                            note.id === selected ? 'note--active' : ''
-                        }`}
-                        key={note.id}
-                        onClick={() => setActive(note.id)}
-                    >
-                        <div className="note__title">
-                            <h2>{note.title}</h2>
-                        </div>
-                        {sanitizedHtml.length > 0 && (
-                            <div
-                                className="note__content"
-                                dangerouslySetInnerHTML={{
-                                    __html: sanitizedHtml,
-                                }}
-                            />
-                        )}
-                    </div>
-                );
-            })}
-        </Scrollbars>
-    ) : (
-        <span className="note-list__message">
-            You don't create any notes so far
-        </span>
-    );
+  return notesLoading ? (
+    <div style={{ textAlign: 'center', marginTop: 24 }}>
+      <Spinner className="note-list__loader-icon" size={32} />
+    </div>
+  ) : notes.length > 0 ? (
+    <Scrollbars
+      className="note-list"
+      renderThumbVertical={(props) => (
+        <div {...props} className="note-list__thumb-vertical" />
+      )}
+    >
+      {notes.map((note: any) => (
+        <NoteListItem
+          key={note.id}
+          note={note}
+          selected={selected === note.id}
+        />
+      ))}
+    </Scrollbars>
+  ) : (
+    <span className="note-list__message">
+      You don't create any notes so far
+    </span>
+  );
 };
 
 export default NoteList;

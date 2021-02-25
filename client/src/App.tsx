@@ -6,27 +6,32 @@ import { RegisterPage } from './components/pages/RegisterPage';
 import { EditorPage } from './components/pages/EditorPage';
 import { RootState } from './app/store';
 import { AppPreloader } from './components/layout/AppPreloader';
-import { checkLoginAsync } from './features/users/asyncFunctions';
-import { fetchNotesAsync } from './features/notes/asyncFunctions';
+import { gql, useQuery } from '@apollo/client';
+import { login } from './features/users/usersSlice';
+
+const GET_ME = gql`
+    query getMe {
+        me {
+            id
+            username
+            fullname
+        }
+    }
+`;
 
 function App() {
     const dispatch = useDispatch();
-    const { isAuthenticated, checkRequest } = useSelector(
-        (state: RootState) => state.users
+    const { isAuthenticated } = useSelector((state: RootState) => state.users);
+
+    const { data: userData, loading: userLoading, error: userError } = useQuery(
+        GET_ME
     );
 
     useEffect(() => {
-        dispatch(checkLoginAsync());
-    }, [dispatch]);
+        dispatch(login(userData?.me));
+    }, [dispatch, userLoading]);
 
-    useEffect(() => {
-        if (isAuthenticated) {
-            dispatch(fetchNotesAsync());
-        }
-    }, [dispatch, isAuthenticated]);
-
-    return !isAuthenticated &&
-        checkRequest !== 'fulfilled' ? (
+    return !isAuthenticated && userLoading ? (
         <AppPreloader />
     ) : (
         <BrowserRouter>

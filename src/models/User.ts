@@ -5,6 +5,7 @@ import db from '../db';
 import Note from './Note';
 
 class User extends Model {
+    public id!: number;
     public username!: string;
     public password!: string;
     public fullname!: string;
