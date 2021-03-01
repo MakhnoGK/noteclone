@@ -1,0 +1,1 @@
+export { default as useAuthStyles } from './shared/auth-form';

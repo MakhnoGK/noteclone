@@ -1,0 +1,62 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint",
+    "more"
+  ],
+  "extends": "webbylab",
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "node": true
+  },
+  "globals": {
+    "React": true
+  },
+  "settings": {
+    "import/resolver": {
+      "babel-module": {},
+      "typescript": {},
+      "alias": {
+        "map": [
+          ["@etc", "./etc"],
+          ["@src", "./src"],
+          ["@api", "./src/api"],
+          ["@assets", "./src/assets"],
+          ["@components", "./src/components"],
+          ["@other", "./src/components/other"],
+          ["@modalsData", "./src/components/modals/data"],
+          ["@constants", "./src/constants"],
+          ["@data", "./src/data"],
+          ["@stores", "./src/stores"],
+          ["@styles", "./src/styles"],
+          ["@utils", "./src/utils"]
+        ],
+        "extensions": [ ".js", ".jsx", ".ts", ".tsx", ".json" ]
+      }
+    }
+  },
+  "rules": {
+    "react/require-default-props": 0,
+    "react/react-in-jsx-scope": 0,
+    "indent": 0,
+    "react/jsx-indent": 0,
+    "template-curly-spacing": 0,
+    "camelcase": 0,
+    "newline-before-return": 0,
+    "linebreak-style": 0,
+    "key-spacing": 0,
+    "array-bracket-spacing": 0,
+    "no-shadow": 0,
+    "no-unused-vars": 0,
+    "func-style": 0,
+    "max-len": 0,
+    "no-param-reassign": 0,
+    "no-case-declarations": 0,
+    "react/prop-types": 0,
+    "react/no-multi-comp": 0,
+    "more/no-window": 0
+  }
+}
