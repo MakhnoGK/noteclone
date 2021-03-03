@@ -1,60 +1,67 @@
-import React from 'react';
-import { BsTrashFill } from 'react-icons/bs';
+import React                        from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
-import { deleteNoteAsync } from '../../features/notes/asyncFunctions';
 import {
-    selectCurrentNote,
-} from '../../features/notes/noteSlice';
-import { logoutAsync } from '../../features/users/asyncFunctions';
-import ActiveButton from '../elements/ActiveButton';
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Box
+} from '@material-ui/core';
+
+import { RootState }                from '../../app/store';
+import { addNoteAsync }             from '../../features/notes/asyncFunctions';
+import { logoutAsync }              from '../../features/users/asyncFunctions';
+import { useAppbarStyles }          from '../../styled';
+
 
 const Navbar = () => {
-    const { user } = useSelector((state: RootState) => state.users);
-    const { selected, saveState, deleteState } = useSelector(
-        (state: RootState) => state.notes
-    );
-    const currentNote = useSelector(selectCurrentNote);
-    const dispatch = useDispatch();
+  const classes  = useAppbarStyles();
+  const user     = useSelector((state: RootState) => state.users.user);
+  const dispatch = useDispatch();
 
+  const handleCreateNote = () => {
+    dispatch(addNoteAsync());
+  }
+
+  const handleUserLogout = () => {
+    dispatch(logoutAsync());
+  }
+
+  const renderCreateButton = () => {
     return (
-        <header className="editor-header">
-            <div className="note-actions">
-                {currentNote && (
-                    <>
-                        <ActiveButton
-                            active={deleteState === 'pending'}
-                            rounded={true}
-                            variant="danger"
-                            onClick={() => dispatch(deleteNoteAsync(selected))}
-                        >
-                            <BsTrashFill size={20} />
-                        </ActiveButton>
+      <Button
+        variant = "contained"
+        color   = "primary"
+        onClick = {handleCreateNote}
+      >
+        Create note
+      </Button>
+    )
+  }
 
-                        {saveState === 'pending' && (
-                            <div className="note-actions__item">Saving...</div>
-                        )}
-                    </>
-                )}
-            </div>
-            <div className="user">
-                <p className="user__greeting">
-                    Welcome, <strong>{user?.fullname}</strong>!
-                </p>
+  const renderUserArea = () => {
+    return (
+      <Box className={classes.userArea}>
+        <Typography component="strong">{user?.fullname}</Typography>
+        <Button
+          color     = "primary"
+          className = {classes.logoutBtn}
+          onClick   = {handleUserLogout}
+        >
+          Logout
+        </Button>
+      </Box>
+    )
+  }
 
-                <a
-                    href="/"
-                    className="user__action link link--primary"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        dispatch(logoutAsync());
-                    }}
-                >
-                    Logout
-                </a>
-            </div>
-        </header>
-    );
+  return (
+    <AppBar position="fixed" className={classes.appbar}>
+      <Toolbar>
+        {renderCreateButton()}
+        {renderUserArea()}
+      </Toolbar>
+    </AppBar>
+  );
 };
 
 export default Navbar;
