@@ -1,26 +1,35 @@
 import React                        from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  AppBar,
-  Toolbar,
   Typography,
+  IconButton,
+  Toolbar,
+  AppBar,
   Button,
   Box
-} from '@material-ui/core';
+}                                   from '@material-ui/core';
+import { Menu as MenuIcon }         from '@material-ui/icons';
 
 import { RootState }                from '../../app/store';
 import { addNoteAsync }             from '../../features/notes/asyncFunctions';
 import { logoutAsync }              from '../../features/users/asyncFunctions';
 import { useAppbarStyles }          from '../../styled';
+import { setDrawerState }           from '../../redux/features/appState';
 
 
 const Navbar = () => {
-  const classes  = useAppbarStyles();
-  const user     = useSelector((state: RootState) => state.users.user);
-  const dispatch = useDispatch();
+  const dispatch      = useDispatch();
+  const classes       = useAppbarStyles();
+  const user          = useSelector((state: RootState) => state.users.user);
+  const drawerState   = useSelector((state: RootState) => state.appState.drawerOpened);
 
-  const handleCreateNote = () => {
-    dispatch(addNoteAsync());
+  const handleToggleDrawerState = () => {
+    dispatch(setDrawerState(!drawerState));
+  }
+
+  const handleCreateNote = async () => {
+    dispatch(setDrawerState(true));
+    dispatch(await addNoteAsync());
   }
 
   const handleUserLogout = () => {
@@ -42,7 +51,9 @@ const Navbar = () => {
   const renderUserArea = () => {
     return (
       <Box className={classes.userArea}>
-        <Typography component="strong">{user?.fullname}</Typography>
+        <Typography component="strong">
+          {user?.fullname}
+        </Typography>
         <Button
           color     = "primary"
           className = {classes.logoutBtn}
@@ -55,8 +66,17 @@ const Navbar = () => {
   }
 
   return (
-    <AppBar position="fixed" className={classes.appbar}>
+    <AppBar
+      position  = "fixed"
+      className = {classes.appbar}
+    >
       <Toolbar>
+        <IconButton
+          onClick   = {handleToggleDrawerState}
+          className = {classes.menuButton}
+        >
+          <MenuIcon />
+        </IconButton>
         {renderCreateButton()}
         {renderUserArea()}
       </Toolbar>

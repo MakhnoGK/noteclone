@@ -4,6 +4,10 @@ const useAppbarStyles = makeStyles((theme) => ({
   appbar: {
     zIndex: theme.zIndex.drawer + 1,
   },
+  menuButton: {
+    color: 'inherit',
+    marginRight: '10px',
+  },
   userArea: {
     marginLeft: 'auto',
     display: 'flex',

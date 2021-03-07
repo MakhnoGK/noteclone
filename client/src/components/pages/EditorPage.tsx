@@ -10,10 +10,13 @@ import { RootState }          from '../../app/store';
 import NoteEditor             from '../../features/notes/NoteEditor';
 import NoteList               from '../../features/notes/NoteList';
 import Appbar                 from '../layout/Appbar';
+import { useEditorStyles }    from '../../styled';
 
 export const EditorPage = () => {
   const { isAuthenticated } = useSelector((state: RootState) => state.users);
+  const drawerState         = useSelector((state: RootState) => state.appState.drawerOpened);
   const history             = useHistory();
+  const classes             = useEditorStyles({ drawerState });
 
   useEffect(() => {
     if (!isAuthenticated) history.push('/login');
@@ -25,8 +28,8 @@ export const EditorPage = () => {
 
       <NoteList />
 
-      <Card style={{position:'fixed', top: 80, left: 250, right: 10, bottom: 10}}>
-        <CardContent>
+      <Card className={classes.root}>
+        <CardContent className={classes.editorContent}>
            <NoteEditor />
         </CardContent>
       </Card>

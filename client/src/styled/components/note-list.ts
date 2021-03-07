@@ -1,13 +1,13 @@
 import { makeStyles } from '@material-ui/core';
 
-const drawerWidth = 240;
+import { DRAWER_WIDTH } from '../../constants/ui';
 
-const useNoteListStyles = makeStyles((theme) => ({
+const useNoteListStyles = makeStyles((_theme) => ({
   root: {
-    width: drawerWidth
+    width: DRAWER_WIDTH
   },
   drawerPaper: {
-    width: drawerWidth
+    width: DRAWER_WIDTH
   }
 }));
 

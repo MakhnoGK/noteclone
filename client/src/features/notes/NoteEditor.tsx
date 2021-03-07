@@ -1,18 +1,28 @@
-import React, { useRef } from 'react';
-import ReactQuill from 'react-quill';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentNote } from './noteSlice';
-import { useNoteEditor } from '../../hooks/useNoteEditor';
-import placeholderIcon from '../../assets/images/blank-document.svg';
+import { useDispatch, useSelector }   from 'react-redux';
+import React, { useRef }              from 'react';
+import { debounce }                   from 'lodash';
+import ReactQuill                     from 'react-quill';
+
+import { RootState }                  from '../../app/store';
+import { selectCurrentNote }          from './noteSlice';
+import { saveNoteAsync }              from './asyncFunctions';
+import placeholderIcon                from '../../assets/images/blank-document.svg';
+import { useNoteEditor }              from '../../hooks/useNoteEditor';
+import { useEditorStyles }            from '../../styled';
+
 import 'react-quill/dist/quill.snow.css';
-import { saveNoteAsync } from './asyncFunctions';
-import { debounce } from 'lodash';
 
 const NoteEditor = () => {
+    const [
+      editorState,
+      setEditorState,
+      title,
+      setTitle
+    ]                 = useNoteEditor();
     const currentNote = useSelector(selectCurrentNote);
-    const dispatch = useDispatch();
-
-    const [editorState, setEditorState, title, setTitle] = useNoteEditor();
+    const drawerState = useSelector((state: RootState) => state.appState.drawerOpened);
+    const dispatch    = useDispatch();
+    const classes     = useEditorStyles({ drawerState });
 
     const saveNote = (title: string, text: string) => {
         dispatch(saveNoteAsync({ title, text }));
@@ -23,12 +33,13 @@ const NoteEditor = () => {
     }, 1000)).current;
 
     // Hide editor if user doesnt have notes
-    if (!currentNote)
+    if (!currentNote) {
         return (
             <div className="editor-placeholder">
                 <img src={placeholderIcon} alt="Editor placeholder" />
             </div>
         );
+    }
 
     return (
         <>
@@ -50,7 +61,7 @@ const NoteEditor = () => {
                     setEditorState(value)
                     saveCallback(title, value);
                 }}
-                style={{ flex: 1 }}
+                className={classes.editorContent}
             />
         </>
     );
